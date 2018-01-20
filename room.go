@@ -1,6 +1,7 @@
 package main
 
 import (
+	_ "fmt"
 	"github.com/gorilla/websocket"
 )
 
@@ -13,6 +14,33 @@ type room struct {
 	leave chan *client
 	//clientsには在室しているすべてのクライアントが保持される
 	clients map[*client]bool
+}
+
+func (r *room) run() {
+	for {
+		select {
+		case client := <-r.join:
+			//参加
+			r.clients[client] = true
+			//fmt.Println("joined:", client)
+		case client := <-r.leave:
+			//退室
+			delete(r.clients, client)
+			close(client.send)
+		case msg := <-r.forward:
+			//すべてのクライアントにメッセージを送信
+			for client := range r.clients {
+				select {
+				case client.send <- msg:
+					//メッセージを送信
+				default:
+					//送信に失敗
+					delete(r.clients, client)
+					close(client.send)
+				}
+			}
+		}
+	}
 }
 
 func (c *client) read() {
