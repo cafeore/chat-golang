@@ -7,6 +7,12 @@ import (
 type room struct {
 	//forwardは他のクライアントに転送するためのメッセージを保持するチャネル
 	forward chan []byte
+	//joinはチャットルームに参加しようとしているクライアントのためのチャネル
+	join chan *client
+	//leaveはチャットルームから体質しようとしているクライアントのためのチャネル
+	leave chan *client
+	//clientsには在室しているすべてのクライアントが保持される
+	clients map[*client]bool
 }
 
 func (c *client) read() {
