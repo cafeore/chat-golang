@@ -32,7 +32,8 @@
 				if(!window["WebSocket"]){
 					alart("WebSocketに対応していないブラウザです。");
 				}else{
-					socket = new WebSocket("ws://localhost:8080/room");
+					socket = new WebSocket("ws://{{.Host}}/room");
+					//.Hostはr.Hostに置き換えるという意味
 					socket.onclose = function(){
 						alart("接続解除しました。");
 					}
