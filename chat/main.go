@@ -32,7 +32,7 @@ func main() {
 	flag.Parse() //フラグを解釈
 	r := newRoom()
 	r.tracer = trace.New(os.Stdout)
-	http.Handle("/", &templateHandler{filename: "chat.html"})
+	http.Handle("/caht", MustAuth(&templateHandler{filename: "chat.html"}))
 	http.Handle("/room", r)
 	//チャットルームを開始します
 	go r.run()
