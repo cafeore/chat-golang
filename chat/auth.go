@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"net/http"
 )
 
@@ -12,7 +11,6 @@ type authHandler struct {
 func (h *authHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	if _, err := r.Cookie("auth"); err == http.ErrNoCookie {
 		//未認証
-		fmt.Println(113)
 		w.Header().Set("Location", "/login")
 		w.WriteHeader(http.StatusTemporaryRedirect)
 	} else if err != nil {
