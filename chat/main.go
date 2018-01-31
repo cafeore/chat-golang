@@ -3,6 +3,8 @@ package main
 import (
 	"flag"
 	"github.com/cafeore/chat-golang/trace"
+	"github.com/stretchr/gomniauth"
+	"github.com/stretchr/gomniauth/providers/google"
 	"log"
 	"net/http"
 	"os"
@@ -30,6 +32,12 @@ func (t *templateHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 func main() {
 	var addr = flag.String("addr", ":8080", "アプリケーションのアドレス")
 	flag.Parse() //フラグを解釈
+	//Gomniauthのセットアップ
+	gomniauth.SetSecurityKey("kusohako")
+	gomniauth.WithProviders(
+		google.New({{ClientID}}, {{SeacretKey}}, "http://localhost:8080/auth/callback/google"),
+	)
+
 	r := newRoom()
 	r.tracer = trace.New(os.Stdout)
 	http.Handle("/chat", MustAuth(&templateHandler{filename: "chat.html"}))
