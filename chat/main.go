@@ -33,9 +33,9 @@ func main() {
 	var addr = flag.String("addr", ":8080", "アプリケーションのアドレス")
 	flag.Parse() //フラグを解釈
 	//Gomniauthのセットアップ
-	gomniauth.SetSecurityKey("kusohako")
+	gomniauth.SetSecurityKey("セキュリティキー") //セキュリティーキーの設置
 	gomniauth.WithProviders(
-		google.New({{ClientID}}, {{SeacretKey}}, "http://localhost:8080/auth/callback/google"),
+		google.New("クライアントIDを入れる場所", "セキュリティキーを入れる場所", "http://localhost:8080/auth/callback/google"),
 	)
 
 	r := newRoom()
