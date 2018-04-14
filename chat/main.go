@@ -44,7 +44,7 @@ func main() {
 	//Gomniauthのセットアップ
 	gomniauth.SetSecurityKey("セキュリティキー") //セキュリティーキーの設置
 	gomniauth.WithProviders(
-		google.New("345220312263-u3snncq0plgve3h4v0e4c34947mc4s9p.apps.googleusercontent.com", "i_j3iK4WMLlq0tj3qxIZXEdQ", "http://localhost:8080/auth/callback/google"),
+		google.New("クライアントID", "シークレットキー", "http://localhost:8080/auth/callback/google"),
 	)
 
 	r := newRoom()
