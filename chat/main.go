@@ -5,6 +5,7 @@ import (
 	"github.com/cafeore/chat-golang/trace"
 	"github.com/stretchr/gomniauth"
 	"github.com/stretchr/gomniauth/providers/google"
+	"github.com/stretchr/objx"
 	"log"
 	"net/http"
 	"os"
@@ -26,8 +27,16 @@ func (t *templateHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	t.once.Do(func() {
 		t.templ = template.Must(template.ParseFiles(filepath.Join("templates", t.filename)))
 	})
+
+	data := map[string]interface{}{
+		"Host": r.Host,
+	}
+	if authCookie, err := r.Cookie("auth"); err == nil {
+		data["UserData"] = objx.MustFromBase64(authCookie.Value)
+	}
+
 	//rはtemplateに対して渡す引数(template側で使えるようになる)
-	t.templ.Execute(w, r)
+	t.templ.Execute(w, data)
 }
 func main() {
 	var addr = flag.String("addr", ":8080", "アプリケーションのアドレス")
@@ -35,7 +44,7 @@ func main() {
 	//Gomniauthのセットアップ
 	gomniauth.SetSecurityKey("セキュリティキー") //セキュリティーキーの設置
 	gomniauth.WithProviders(
-		google.New("クライアントIDを入れる場所", "セキュリティキーを入れる場所", "http://localhost:8080/auth/callback/google"),
+		google.New("345220312263-u3snncq0plgve3h4v0e4c34947mc4s9p.apps.googleusercontent.com", "i_j3iK4WMLlq0tj3qxIZXEdQ", "http://localhost:8080/auth/callback/google"),
 	)
 
 	r := newRoom()

@@ -8,7 +8,8 @@
 	</style>
 	<body>
 		<ul id="messages"></ul>
-		Websocketを使ったチャットアプリケーション
+		Websocketを使ったチャットアプリケーション<br>
+		{{.UserData.name}}:<br/>
 		<form id="chatbox">
 			<textarea></textarea>
 			<input type="submit" name="送信" />
@@ -22,7 +23,7 @@
 				$("#chatbox").submit(function(){
 					if(!msgBox.val())return false;
 					if(!socket){
-						alart("エラー: WebSocket接続が行われていません。");
+						alert("エラー: WebSocket接続が行われていません。");
 						return false;
 					}
 					socket.send(msgBox.val());
@@ -30,12 +31,12 @@
 					return false;
 				});
 				if(!window["WebSocket"]){
-					alart("WebSocketに対応していないブラウザです。");
+					alert("WebSocketに対応していないブラウザです。");
 				}else{
 					socket = new WebSocket("ws://{{.Host}}/room");
 					//.Hostはr.Hostに置き換えるという意味
 					socket.onclose = function(){
-						alart("接続解除しました。");
+						alert("接続解除しました。");
 					}
 					socket.onmessage = function(e){
 						messages.append($("<li>").text(e.data));
