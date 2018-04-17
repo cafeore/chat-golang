@@ -51,13 +51,12 @@ func (r *room) run() {
 				client.send <- msg
 				//メッセージを送信
 				r.tracer.Trace("-- クライアントに送信されました")
-				/*default:
-					//送信に失敗
-					delete(r.clients, client)
-					close(client.send)
-					r.tracer.Trace("-- 送信に失敗しました。クライアントをクリーンアップします")
-				}*/
 			}
+			/*default:
+			//送信に失敗
+			delete(r.clients, client)
+			close(client.send)
+			r.tracer.Trace("-- 送信に失敗しました。クライアントをクリーンアップします")*/
 		}
 	}
 }
